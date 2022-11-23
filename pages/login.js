@@ -6,6 +6,7 @@ import {
   Button,
   Box,
   Link as ChakraLink,
+  Flex,
 } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -14,8 +15,8 @@ function Login() {
   const handleClick = () => setShow(!show);
 
   return (
-    <Box display="flex" h="100vh" alignItems="center" justifyContent="center">
-      <Box as="span" display="flex" flexDirection={"column"}>
+    <Flex h="100vh" alignItems="center" justifyContent="center">
+      <Box display="flex" flexDirection={"column"}>
         <Input placeholder="username" size={"lg"} w={"2xl"} />
         <InputGroup size="lg" marginY={"3"}>
           <Input
@@ -29,11 +30,13 @@ function Login() {
             </Button>
           </InputRightElement>
         </InputGroup>
-        <Link href={"/home"} passHref>
-          <ChakraLink>Login</ChakraLink>
-        </Link>
+        <Box alignSelf={"flex-end"}>
+          <Link href={"/home"} passHref>
+            <Button>Login</Button>
+          </Link>
+        </Box>
       </Box>
-    </Box>
+    </Flex>
   );
 }
 
