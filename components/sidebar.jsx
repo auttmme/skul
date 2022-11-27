@@ -15,18 +15,20 @@ import {
 import { FiHome, FiMenu, FiPlus, FiLogOut } from "react-icons/fi";
 
 const LinkItems = [
-  { name: "Home", icon: FiHome },
-  { name: "Add", icon: FiPlus },
-  { name: "Logout", icon: FiLogOut },
-  // { name: "Favourites", icon: FiStar },
-  // { name: "Settings", icon: FiSettings },
+  { name: "Home", icon: FiHome, link: "/home" },
+  { name: "Add", icon: FiPlus, link: "/inputData" },
+  { name: "Logout", icon: FiLogOut, link: "/" },
 ];
 
 export default function Sidebar({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box
+      minH="100vh"
+      bg={useColorModeValue("white", "gray.600")}
+      color={useColorModeValue("black", "white")}
+    >
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -71,7 +73,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} link={link.link}>
           {link.name}
         </NavItem>
       ))}
@@ -79,10 +81,10 @@ const SidebarContent = ({ onClose, ...rest }) => {
   );
 };
 
-const NavItem = ({ icon, children, ...rest }) => {
+const NavItem = ({ icon, link, children, ...rest }) => {
   return (
     <Link
-      href="#"
+      href={link}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
     >
