@@ -1,12 +1,21 @@
+import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
-import Sidebar from "../components/sidebar";
-import DataTable from "../components/table";
+import Layout from "../components/common/layout";
+import Search from "../components/home/search";
+import DataTable from "../components/home/table";
+import { FiFilter } from "react-icons/fi";
 
 function Home() {
   return (
-    <div>
-      <Sidebar children={<DataTable />} />
-    </div>
+    <Box>
+      <Layout>
+        <Flex padding={"8px"} mb={"16px"}>
+          <Search />
+          <FiFilter fontSize={"24px"} />
+        </Flex>
+        <DataTable />
+      </Layout>
+    </Box>
   );
 }
 
