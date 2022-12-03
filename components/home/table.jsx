@@ -9,7 +9,9 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Flex,
 } from "@chakra-ui/react";
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 function DataTable() {
   return (
@@ -26,12 +28,22 @@ function DataTable() {
             </Tr>
           </Thead>
           <Tbody>
-            {/* <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td isNumeric>25.4</Td>
-            </Tr>
             <Tr>
+              <Td>1</Td>
+              <Td>SMPN 10 Tangerang Selatan</Td>
+              <Td>Negeri</Td>
+              <Td>
+                Jl. Yaktapena Raya No.8, Pondok Ranji, Ciputat Timur, Tangerang
+                Selatan, Banten
+              </Td>
+              <Td>
+                <Flex>
+                  <EditIcon />
+                  <DeleteIcon ml={"16px"} />
+                </Flex>
+              </Td>
+            </Tr>
+            {/* <Tr>
               <Td>feet</Td>
               <Td>centimetres (cm)</Td>
               <Td isNumeric>30.48</Td>
