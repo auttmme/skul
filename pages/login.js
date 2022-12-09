@@ -24,15 +24,15 @@ function Login() {
   // if username length > 1 && password.length > 1 disabled false
   return (
     <Flex h="100vh" alignItems="center" justifyContent="center">
-      <Box display="flex" flexDirection={"column"}>
+      <Box display="flex" flexDirection="column">
         <Input
           placeholder="username"
-          size={"lg"}
-          w={"2xl"}
+          size="lg"
+          w="2xl"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <InputGroup size="lg" marginY={"3"}>
+        <InputGroup size="lg" marginY="3">
           <Input
             pr="4.5rem"
             type={show ? "text" : "password"}
@@ -46,8 +46,8 @@ function Login() {
             </Button>
           </InputRightElement>
         </InputGroup>
-        <Box alignSelf={"flex-end"}>
-          <Link href={"/home"} passHref>
+        <Box alignSelf="flex-end">
+          <Link href="/home" passHref>
             <Button
               disabled={username.length < 1 || password.length < 1}
               onClick={() => alert(`${username} ${password}`)}
