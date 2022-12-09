@@ -29,14 +29,14 @@ function DataTable() {
           </Thead>
           <Tbody>
             <Tr>
-              <Td></Td>
-              <Td></Td>
-              <Td></Td>
-              <Td></Td>
+              <Td />
+              <Td />
+              <Td />
+              <Td />
               <Td>
                 <Flex>
                   <EditIcon />
-                  <DeleteIcon ml={"16px"} />
+                  <DeleteIcon ml="16px" />
                 </Flex>
               </Td>
             </Tr>
