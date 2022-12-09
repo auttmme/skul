@@ -10,8 +10,8 @@ import { SearchIcon } from "@chakra-ui/icons";
 
 function Search() {
   return (
-    <Flex w={"full"} justifyContent={"center"}>
-      <InputGroup w={"4xl"}>
+    <Flex w="full" justifyContent="center">
+      <InputGroup w="4xl">
         <InputRightElement
           pointerEvents="none"
           children={<SearchIcon color="gray.300" />}
