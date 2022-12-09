@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { FiFilter } from "react-icons/fi";
-import Layout from "../components/common/layout";
-import Search from "../components/home/search";
-import DataTable from "../components/home/table";
+import Layout from "/components/common/layout";
+import Search from "/components/home/search";
+import DataTable from "/components/home/table";
 
 function Home() {
   return (
