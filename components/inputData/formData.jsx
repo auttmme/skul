@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Flex, Input, Select } from "@chakra-ui/react";
 
 function FormData() {
+  const [schoolName, setSchoolName] = useState("");
+  const [schoolAddress, setSchoolAddress] = useState("");
+  const jenjangSekolah = ["SD", "SMP", "SMA"];
+  const jenisSekolah = ["Negeri", "Swasta"];
+
   return (
     <Flex paddingTop="20" justifyContent="center" alignItems="center">
       <Box width="6xl">
@@ -15,7 +20,13 @@ function FormData() {
             placeholder="Pilih jenjang sekolah"
             borderColor="gray.300"
             marginTop="1"
-          ></Select>
+          >
+            {jenjangSekolah.map((jenjang, index) => (
+              <option value={jenjang} key={index}>
+                {jenjang}
+              </option>
+            ))}
+          </Select>
         </Box>
         <Box marginBottom="12px" marginTop="1">
           <label>Jenis Sekolah</label>
@@ -23,7 +34,11 @@ function FormData() {
             placeholder="Pilih jenis sekolah"
             borderColor="gray.300"
             marginTop="1"
-          ></Select>
+          >
+            {jenisSekolah.map((jenis) => (
+              <option value={jenis}>{jenis}</option>
+            ))}
+          </Select>
         </Box>
         <Box marginBottom="12px">
           <label>Provinsi</label>
