@@ -60,7 +60,7 @@ function FormData() {
           <label>Alamat</label>
           <Input borderColor="gray.300" marginTop="1" />
         </Box>
-        <Flex justifyContent={"space-between"}>
+        <Flex justifyContent="space-between">
           <Button>Delete</Button>
           <Button>Save</Button>
         </Flex>
