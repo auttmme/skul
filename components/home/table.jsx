@@ -29,17 +29,14 @@ function DataTable() {
           </Thead>
           <Tbody>
             <Tr>
-              <Td>1</Td>
-              <Td>SMPN 10 Tangerang Selatan</Td>
-              <Td>Negeri</Td>
-              <Td>
-                Jl. Yaktapena Raya No.8, Pondok Ranji, Ciputat Timur, Tangerang
-                Selatan, Banten
-              </Td>
+              <Td />
+              <Td />
+              <Td />
+              <Td />
               <Td>
                 <Flex>
                   <EditIcon />
-                  <DeleteIcon ml={"16px"} />
+                  <DeleteIcon ml="16px" />
                 </Flex>
               </Td>
             </Tr>
