@@ -12,10 +12,9 @@ function Search() {
   return (
     <Flex w="full" justifyContent="center">
       <InputGroup w="4xl">
-        <InputRightElement
-          pointerEvents="none"
-          children={<SearchIcon color="gray.300" />}
-        />
+        <InputRightElement pointerEvents="none">
+          <SearchIcon />
+        </InputRightElement>
         <Input type="tel" placeholder="Search" />
       </InputGroup>
     </Flex>
