@@ -1,0 +1,19 @@
+{
+  "area": [
+    {
+      "id": "8",
+      "province": "DKI Jakarta",
+      "cities": ["Jakarta Selatan", "Jakarta Barat", "Jakarta Timur", "Jakarta Pusat"]
+    },
+    {
+      "id": "9",
+      "province": "Banten",
+      "cities": ["Tangerang Selatan", "Kota Tangerang", "Kabupaten Tangerang", "Kota Serang", "Kota Cilegon"]
+    },
+    {
+      "id": "10",
+      "province": "Jawa Barat",
+      "cities": ["Kota Bandung", "Kabupaten Bandung", "Kota Bogor", "Kabupaten Bogor", "Kota Depok", "Kota Bekasi"]
+    }
+  ]
+}
