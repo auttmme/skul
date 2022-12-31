@@ -20,7 +20,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.40.0",
-    "react-icons": "^4.6.0"
+    "react-icons": "^4.6.0",
+    "stein-js-client": "^0.0.2",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "eslint": "^8.2.0",
