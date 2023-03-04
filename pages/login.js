@@ -28,7 +28,7 @@ function Login() {
   function onSubmit(values) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
+        alert(JSON.stringify(values, null, 2)); // eslint-disable-line
         resolve();
         router.push("/home");
       }, 3000);
