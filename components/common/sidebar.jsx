@@ -55,7 +55,7 @@ export default function Sidebar({ children }) {
   );
 }
 
-const SidebarContent = ({ onClose, ...rest }) => {
+function SidebarContent({ onClose, ...rest }) {
   return (
     <Box
       bg={useColorModeValue("white", "gray.900")}
@@ -79,9 +79,9 @@ const SidebarContent = ({ onClose, ...rest }) => {
       ))}
     </Box>
   );
-};
+}
 
-const NavItem = ({ icon, link, children, ...rest }) => {
+function NavItem({ icon, link, children, ...rest }) {
   return (
     <Link
       href={link}
@@ -115,9 +115,9 @@ const NavItem = ({ icon, link, children, ...rest }) => {
       </Flex>
     </Link>
   );
-};
+}
 
-const MobileNav = ({ onOpen, ...rest }) => {
+function MobileNav({ onOpen, ...rest }) {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -142,4 +142,4 @@ const MobileNav = ({ onOpen, ...rest }) => {
       </Text>
     </Flex>
   );
-};
+}
