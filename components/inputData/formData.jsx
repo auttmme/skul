@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Box,
   Button,
@@ -8,7 +8,7 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-("constants/school");
+
 import { useForm } from "react-hook-form";
 import schoolLevel, { schoolType } from "constants/school";
 import { uuid } from "uuidv4";
@@ -38,25 +38,33 @@ export default function FormData({ area }) {
   ));
 
   const cities = area
-    .find((item) => item.province == province)
+    .find((item) => item.province === province)
     ?.cities.map((city) => (
       <option value={city} key={city}>
         {city}
       </option>
     ));
 
-  function handleProvinceChange(e) {
+  const handleProvinceChange = useCallback((e) => {
     setData((data) => ({ city: "", province: e.target.value }));
-  }
+  });
 
-  function handleCityChange(e) {
+  const handleCityChange = useCallback((e) => {
     setData((data) => ({ ...data, city: e.target.value }));
-  }
+  });
+
+  // function handleProvinceChange(e) {
+  //   setData((data) => ({ city: "", province: e.target.value }));
+  // }
+
+  // function handleCityChange(e) {
+  //   setData((data) => ({ ...data, city: e.target.value }));
+  // }
 
   // console.log(schoolName, schoolAddress);
-  // console.log(area);
-  // console.log("province", province);
-  // console.log("city", city);
+  console.log("area", area);
+  console.log("province", province);
+  console.log("city", city);
   // console.log("level", level);
   // console.log("type", type);
 
@@ -84,6 +92,12 @@ export default function FormData({ area }) {
       });
     console.log("province", province);
     console.log("city", city);
+
+    setSchoolName("");
+    setLevel("");
+    setType("");
+    setData({});
+    setSchoolAddress("");
   }
 
   return (
@@ -142,8 +156,10 @@ export default function FormData({ area }) {
               marginTop="1"
               onChange={(e) => setType(e.target.value)}
             >
-              {schoolType.map((jenis) => (
-                <option value={jenis}>{jenis}</option>
+              {schoolType.map((jenis, index) => (
+                <option key={index} value={jenis}>
+                  {jenis}
+                </option>
               ))}
             </Select>
             {errors.schoolType && (
