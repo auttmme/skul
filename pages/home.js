@@ -7,9 +7,17 @@ import Search from "/components/home/search";
 import DataTable from "/components/home/table";
 
 function Home() {
-  const { data, isPending, error } = useFetch(
+  const { allData, isPending, error } = useFetch(
     "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
   );
+
+  const [dataStein, setDataStein] = useState();
+
+  useEffect(() => {
+    setDataStein(allData);
+    console.log("allData", allData);
+    console.log("dataStein", dataStein);
+  }, [allData]);
 
   return (
     <Box>
@@ -18,7 +26,13 @@ function Home() {
           <Search />
           <FiFilter fontSize="24px" />
         </Flex>
-        {data && <DataTable pending={isPending} data={data} />}
+        {dataStein && (
+          <DataTable
+            pending={isPending}
+            data={dataStein}
+            setData={setDataStein}
+          />
+        )}
       </Layout>
     </Box>
   );
