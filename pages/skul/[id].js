@@ -1,35 +1,76 @@
-import React, { useCallback, useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  FormLabel,
-  Input,
-  Select,
-  Text,
-} from "@chakra-ui/react";
-
+import { FormLabel, Input, Text, Box, Button, Select } from "@chakra-ui/react";
+import { schoolType } from "constants/school";
+import { useRouter } from "next/router";
+import InputData from "pages/inputData";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import schoolLevel, { schoolType } from "constants/school";
-import { uuid } from "uuidv4";
+import Area from "pages/api/json/area.json";
 
-export default function FormData({ area }) {
-  const SteinStore = require("stein-js-client");
-  const store = new SteinStore(
-    "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
-  );
-
+function Details() {
+  const router = useRouter();
+  const { id } = router.query;
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const [data, setData] = useState([]);
   const [schoolName, setSchoolName] = useState("");
   const [level, setLevel] = useState("");
   const [type, setType] = useState("");
-  const [{ province, city }, setData] = useState({});
   const [schoolAddress, setSchoolAddress] = useState("");
+  const [province, setProvince] = useState("");
+
+  const area = Area?.area;
+
+  console.log("school name", schoolName);
+
+  useEffect(() => {
+    const SteinStore = require("stein-js-client");
+    const store = new SteinStore(
+      "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
+    );
+
+    store.read("Sheet1", { search: { id: id } }).then((data) => {
+      console.log(data);
+      setData(data);
+      return data.forEach((d) => {
+        setSchoolName(d.name);
+        setType(d.type);
+        setSchoolAddress(d.address);
+        setProvince(d.province);
+      });
+    });
+  }, []);
+
+  const onSubmit = () => {
+    const SteinStore = require("stein-js-client");
+    const store = new SteinStore(
+      "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
+    );
+
+    store
+      .edit("Sheet1", {
+        search: { id: id },
+        set: { name: schoolName, address: schoolAddress },
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
+  const filterProvince = () => {
+    const arrArea = area.filter((val) => val.province === province);
+    console.log("arrArea", arrArea[0]?.province);
+    return arrArea[0]?.province;
+  };
+
+  const filterCities = () => {
+    const filteredBooks = books.filter((val) =>
+      val.areas.includes(filterValue)
+    );
+  };
 
   const provinces = area.map((a) => (
     <option value={a.province} key={a.index}>
@@ -37,74 +78,16 @@ export default function FormData({ area }) {
     </option>
   ));
 
-  const cities = area
-    .find((item) => item.province === province)
-    ?.cities.map((city) => (
-      <option value={city} key={city}>
-        {city}
-      </option>
-    ));
-
-  const handleProvinceChange = useCallback((e) => {
-    setData((data) => ({ city: "", province: e.target.value }));
-  });
-
-  const handleCityChange = useCallback((e) => {
-    setData((data) => ({ ...data, city: e.target.value }));
-  });
-
-  // function handleProvinceChange(e) {
-  //   setData((data) => ({ city: "", province: e.target.value }));
-  // }
-
-  // function handleCityChange(e) {
-  //   setData((data) => ({ ...data, city: e.target.value }));
-  // }
-
-  // console.log(schoolName, schoolAddress);
-  console.log("area", area);
-  console.log("province", province);
-  console.log("city", city);
-  // console.log("level", level);
-  // console.log("type", type);
-
-  function onSubmit(values) {
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     alert(JSON.stringify(values, null, 2));
-    //     resolve();
-    //   }, 3000);
-    // });
-    store
-      .append("Sheet1", [
-        {
-          id: uuid(),
-          name: schoolName,
-          type: type,
-          address: schoolAddress,
-          city: city,
-          province: province,
-        },
-      ])
-      .then((res) => {
-        console.log("res", res);
-        console.log("val", values);
-      });
-    console.log("province", province);
-    console.log("city", city);
-
-    setSchoolName("");
-    setLevel("");
-    setType("");
-    setData({});
-    setSchoolAddress("");
-  }
+  // console.log(id);
+  // console.log(data);
+  console.log("area", Area);
+  console.log("filterprov", filterProvince());
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Flex paddingTop="20" justifyContent="center" alignItems="center">
-        <Box width="6xl">
-          <Box marginBottom="12px">
+      {data.map((d) => (
+        <div>
+          <Box marginBottom="12px" width="50%">
             <FormLabel htmlFor="school name">Nama Sekolah</FormLabel>
             <Input
               {...register("schoolName", {
@@ -122,7 +105,7 @@ export default function FormData({ area }) {
               </Text>
             )}
           </Box>
-          <Box marginBottom="12px">
+          {/* <Box marginBottom="12px">
             <FormLabel>Jenjang Sekolah</FormLabel>
             <Select
               {...register("schoolLevel", {
@@ -144,7 +127,7 @@ export default function FormData({ area }) {
                 {errors.schoolLevel.message}
               </Text>
             )}
-          </Box>
+          </Box> */}
           <Box marginBottom="12px" marginTop="1">
             <FormLabel>Jenis Sekolah</FormLabel>
             <Select
@@ -155,11 +138,10 @@ export default function FormData({ area }) {
               borderColor="gray.300"
               marginTop="1"
               onChange={(e) => setType(e.target.value)}
+              value={type}
             >
-              {schoolType.map((jenis, index) => (
-                <option key={index} value={jenis}>
-                  {jenis}
-                </option>
+              {schoolType.map((jenis) => (
+                <option value={jenis}>{jenis}</option>
               ))}
             </Select>
             {errors.schoolType && (
@@ -175,23 +157,13 @@ export default function FormData({ area }) {
               placeholder="Pilih Provinsi"
               borderColor="gray.300"
               marginTop="1"
-              onChange={handleProvinceChange}
+              // onChange={handleProvinceChange}
+              value={filterProvince()}
             >
               {provinces}
             </Select>
           </Box>
-          <Box marginBottom="12px">
-            <FormLabel>Kota / Kabupaten</FormLabel>
-            <Select
-              {...register("City")}
-              placeholder="Pilih Kota / Kabupaten"
-              borderColor="gray.300"
-              marginTop="1"
-              onChange={handleCityChange}
-            >
-              {cities}
-            </Select>
-          </Box>
+          <p>KOTA: {d.city}</p>
           <Box marginBottom="12px">
             <FormLabel>Alamat</FormLabel>
             <Input
@@ -210,14 +182,11 @@ export default function FormData({ area }) {
               </Text>
             )}
           </Box>
-          <Flex justifyContent="space-between">
-            <Button>Delete</Button>
-            <Button type="submit" isLoading={isSubmitting}>
-              Save
-            </Button>
-          </Flex>
-        </Box>
-      </Flex>
+        </div>
+      ))}
+      <Button type="submit">Save</Button>
     </form>
   );
 }
+
+export default Details;

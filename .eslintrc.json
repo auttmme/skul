@@ -8,16 +8,33 @@
     "no-process-exit": "off",
     "object-shorthand": "off",
     "class-methods-use-this": "off",
+    "import/no-unresolved": "off",
+    "import/no-absolute-path": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/no-array-index-key": "off",
     "prettier/prettier": [
       "error",
       {
         "endOfLine": "auto"
       }
     ],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/prop-types": 0,
+    "import/extensions": [0, "never"],
+    "no-shadow": "off",
+    "global-require": "off",
+    "no-undef": "off"
   },
   "parserOptions": {
-    "sourceType": "module"
+    "ecmaVersion": 2020
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
   
 }
