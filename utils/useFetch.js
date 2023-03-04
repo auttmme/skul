@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 function useFetch(url) {
-  const [data, setAllData] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
 
@@ -34,9 +34,9 @@ function useFetch(url) {
       setAllData(data);
       setIsPending(false);
     });
-  }, [url, data]);
+  }, [url]);
 
-  return { data, isPending, error };
+  return { allData, isPending, error };
 }
 
 export default useFetch;
