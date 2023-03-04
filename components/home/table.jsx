@@ -17,17 +17,15 @@ import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-function DataTable({ pending, data }) {
+function DataTable({ pending, data, setData }) {
   const SteinStore = require("stein-js-client");
   const store = new SteinStore(
     "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
   );
 
-  console.log(data);
+  // console.log(data);
 
   const skele = [1, 2, 3, 4];
-
-  const router = useRouter();
 
   const deleteData = (id) => {
     store
@@ -35,8 +33,10 @@ function DataTable({ pending, data }) {
         search: { id: id },
       })
       .then((res) => {
-        console.log(res);
-        router.push("/home");
+        console.log("res", res);
+        data = data.filter((val) => val.id !== id); // eslint-disable-line no-param-reassign
+        console.log("new data", data);
+        setData(data);
       });
   };
 
@@ -92,9 +92,11 @@ function DataTable({ pending, data }) {
                           {/* <Link>
                           </Link> */}
                           <Link href={`/skul/${id}`} key={id}>
-                            <EditIcon />
+                            <Button>
+                              <EditIcon />
+                            </Button>
                           </Link>
-                          <Button onClick={() => deleteData(id)}>
+                          <Button ml="16px" onClick={() => deleteData(id)}>
                             <DeleteIcon />
                           </Button>
                         </Flex>
