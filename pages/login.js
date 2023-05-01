@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Input,
   InputGroup,
@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { UserContext } from "utils/UserContext";
 
 function Login() {
   const {
@@ -19,26 +20,21 @@ function Login() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+  const { login } = useContext(UserContext);
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  function onSubmit(values) {
-    return new Promise((resolve) => {
+  function onSubmit() {
+    return new Promise(() => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2)); // eslint-disable-line
-        resolve();
+        login(username);
         router.push("/home");
       }, 3000);
     });
-    // console.log(values);
-    // alert(JSON.stringify(values, null, 2));
   }
-
-  // if username length > 1 && password.length > 1 disabled false
-  // const disable = username.length > 1 && password.length > 1;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,21 +70,10 @@ function Login() {
             </InputRightElement>
           </InputGroup>
           <Box alignSelf="flex-end">
-            {/* <Link href="/home" passHref>
-              <Button
-                type="submit"
-                disabled={username.length < 1 || password.length < 1}
-                // disabled={!disable}
-              >
-                Login
-              </Button>
-            </Link> */}
             <Button
               type="submit"
               disabled={username.length < 1 || password.length < 1}
               isLoading={isSubmitting}
-              // disabled={!disable}
-              // onClick={() => alert(`${username} ${password}`)}
             >
               Login
             </Button>
