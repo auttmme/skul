@@ -12,11 +12,6 @@ function Home() {
   const { user } = useContext(UserContext);
   const router = useRouter();
 
-  if (!user) {
-    router.push("/");
-    return null;
-  }
-
   const { allData, isPending, error } = useFetch(
     "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
   );
@@ -24,9 +19,13 @@ function Home() {
   const [dataStein, setDataStein] = useState();
 
   useEffect(() => {
-    setDataStein(allData);
-    console.log("allData", allData);
-    console.log("dataStein", dataStein);
+    if (!user) {
+      router.push("/");
+    } else {
+      setDataStein(allData);
+      console.log("allData", allData);
+      console.log("dataStein", dataStein);
+    }
   }, [allData]);
 
   return (
