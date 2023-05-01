@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   IconButton,
   Box,
@@ -13,6 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FiHome, FiMenu, FiPlus, FiLogOut } from "react-icons/fi";
+import { UserContext } from "utils/UserContext";
 
 const LinkItems = [
   { name: "Home", icon: FiHome, link: "/home" },
@@ -56,6 +57,7 @@ export default function Sidebar({ children }) {
 }
 
 function SidebarContent({ onClose, ...rest }) {
+  const { logout } = useContext(UserContext);
   return (
     <Box
       bg={useColorModeValue("white", "gray.900")}
@@ -73,7 +75,12 @@ function SidebarContent({ onClose, ...rest }) {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} link={link.link}>
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          link={link.link}
+          onClick={link.name === "Logout" ? logout : null}
+        >
           {link.name}
         </NavItem>
       ))}
