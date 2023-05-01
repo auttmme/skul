@@ -11,7 +11,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 function Search() {
   return (
     <Flex w="full" justifyContent="center">
-      <InputGroup w="4xl">
+      <InputGroup>
         <InputRightElement pointerEvents="none">
           <SearchIcon />
         </InputRightElement>
