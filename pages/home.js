@@ -23,10 +23,8 @@ function Home() {
       router.push("/");
     } else {
       setDataStein(allData);
-      console.log("allData", allData);
-      console.log("dataStein", dataStein);
     }
-  }, [allData]);
+  }, [allData, user]);
 
   return (
     <Box>
