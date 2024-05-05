@@ -12,12 +12,14 @@ import {
 import { useForm } from "react-hook-form";
 import schoolLevel, { schoolType } from "constants/school";
 import { uuid } from "uuidv4";
+import { useRouter } from "next/router";
 
 export default function FormData({ area }) {
   const SteinStore = require("stein-js-client");
   const store = new SteinStore(
     "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
   );
+  const router = useRouter();
 
   const {
     register,
@@ -46,27 +48,12 @@ export default function FormData({ area }) {
     ));
 
   const handleProvinceChange = useCallback((e) => {
-    setData((data) => ({ city: "", province: e.target.value }));
+    setData(() => ({ city: "", province: e.target.value }));
   });
 
   const handleCityChange = useCallback((e) => {
     setData((data) => ({ ...data, city: e.target.value }));
   });
-
-  // function handleProvinceChange(e) {
-  //   setData((data) => ({ city: "", province: e.target.value }));
-  // }
-
-  // function handleCityChange(e) {
-  //   setData((data) => ({ ...data, city: e.target.value }));
-  // }
-
-  // console.log(schoolName, schoolAddress);
-  console.log("area", area);
-  console.log("province", province);
-  console.log("city", city);
-  // console.log("level", level);
-  // console.log("type", type);
 
   function onSubmit(values) {
     // return new Promise((resolve) => {
@@ -75,29 +62,23 @@ export default function FormData({ area }) {
     //     resolve();
     //   }, 3000);
     // });
-    store
-      .append("Sheet1", [
-        {
-          id: uuid(),
-          name: schoolName,
-          type: type,
-          address: schoolAddress,
-          city: city,
-          province: province,
-        },
-      ])
-      .then((res) => {
-        console.log("res", res);
-        console.log("val", values);
-      });
-    console.log("province", province);
-    console.log("city", city);
+    store.append("Sheet1", [
+      {
+        id: uuid(),
+        name: schoolName,
+        type: type,
+        address: schoolAddress,
+        city: city,
+        province: province,
+      },
+    ]);
 
     setSchoolName("");
     setLevel("");
     setType("");
     setData({});
     setSchoolAddress("");
+    router.push("/");
   }
 
   return (

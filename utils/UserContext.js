@@ -1,9 +1,9 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 
 export const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -14,7 +14,7 @@ export default function UserContextProvider({ children }) {
 
   const handleLogin = (username) => {
     setUser(username);
-    localStorage.setItem("user", username);
+    localStorage.setItem("user", JSON.stringify(username));
   };
 
   const handleLogout = () => {
@@ -22,12 +22,14 @@ export default function UserContextProvider({ children }) {
     localStorage.removeItem("user");
   };
 
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  const value = {
-    user,
-    login: handleLogin,
-    logout: handleLogout,
-  };
+  const value = useMemo(
+    () => ({
+      user,
+      login: handleLogin,
+      logout: handleLogout,
+    }),
+    [user]
+  );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

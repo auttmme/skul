@@ -7,7 +7,6 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Flex,
   Skeleton,
@@ -15,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 function DataTable({ pending, data, setData }) {
   const SteinStore = require("stein-js-client");
@@ -23,20 +21,17 @@ function DataTable({ pending, data, setData }) {
     "https://api.steinhq.com/v1/storages/63a5d577eced9b09e9ac9bcc"
   );
 
-  // console.log(data);
-
   const skele = [1, 2, 3, 4];
+  let copyData = data;
 
   const deleteData = (id) => {
     store
       .delete("Sheet1", {
         search: { id: id },
       })
-      .then((res) => {
-        console.log("res", res);
-        data = data.filter((val) => val.id !== id); // eslint-disable-line no-param-reassign
-        console.log("new data", data);
-        setData(data);
+      .then(() => {
+        copyData = data.filter((val) => val.id !== id);
+        setData(copyData);
       });
   };
 
@@ -55,7 +50,7 @@ function DataTable({ pending, data, setData }) {
           </Thead>
           <Tbody>
             {pending
-              ? skele.map((s) => (
+              ? skele.map(() => (
                   <Tr>
                     <Td>
                       <Skeleton height="10" />
@@ -77,8 +72,8 @@ function DataTable({ pending, data, setData }) {
                     </Td>
                   </Tr>
                 ))
-              : data?.map((d, index) => {
-                  const { id, name, type, address, city, province } = d;
+              : copyData?.map((item, index) => {
+                  const { id, name, type, address, city, province } = item;
                   return (
                     <Tr key={id}>
                       <Td>{index + 1}</Td>
@@ -89,8 +84,6 @@ function DataTable({ pending, data, setData }) {
                       </Td>
                       <Td>
                         <Flex>
-                          {/* <Link>
-                          </Link> */}
                           <Link href={`/skul/${id}`} key={id}>
                             <Button>
                               <EditIcon />
@@ -104,17 +97,6 @@ function DataTable({ pending, data, setData }) {
                     </Tr>
                   );
                 })}
-
-            {/* <Tr>
-              <Td>feet</Td>
-              <Td>centimetres (cm)</Td>
-              <Td isNumeric>30.48</Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>metres (m)</Td>
-              <Td isNumeric>0.91444</Td>
-            </Tr> */}
           </Tbody>
         </Table>
       </TableContainer>
