@@ -55,13 +55,7 @@ export default function FormData({ area }) {
     setData((data) => ({ ...data, city: e.target.value }));
   });
 
-  function onSubmit(values) {
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     alert(JSON.stringify(values, null, 2));
-    //     resolve();
-    //   }, 3000);
-    // });
+  function onSubmit() {
     store.append("Sheet1", [
       {
         id: uuid(),
@@ -78,7 +72,7 @@ export default function FormData({ area }) {
     setType("");
     setData({});
     setSchoolAddress("");
-    router.push("/");
+    router.push("/home");
   }
 
   return (
@@ -109,6 +103,7 @@ export default function FormData({ area }) {
               {...register("schoolLevel", {
                 required: "Jenjang sekolah wajib dipilih",
               })}
+              value={level}
               placeholder="Pilih jenjang sekolah"
               borderColor="gray.300"
               marginTop="1"

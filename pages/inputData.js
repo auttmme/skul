@@ -1,10 +1,8 @@
 import React from "react";
-import Layout from "/components/common/layout";
 import FormData from "/components/inputData/formData";
 
 function InputData({ area }) {
-  console.log("area:", area !== null);
-  return <Layout>{area && <FormData area={area} />}</Layout>;
+  return area && <FormData area={area} />;
 }
 
 export async function getServerSideProps() {
