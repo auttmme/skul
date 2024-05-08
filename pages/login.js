@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Input,
   InputGroup,
@@ -17,7 +17,7 @@ function Login() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-  const { login } = useContext(UserContext);
+  const { login, user } = useContext(UserContext);
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [username, setUsername] = useState("");
@@ -25,13 +25,14 @@ function Login() {
   const router = useRouter();
 
   function onSubmit() {
-    return new Promise(() => {
-      setTimeout(() => {
-        login(username);
-        router.push("/home");
-      }, 1000);
-    });
+    login(username);
   }
+
+  useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  }, [user]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
