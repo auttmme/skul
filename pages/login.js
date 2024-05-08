@@ -5,11 +5,8 @@ import {
   InputRightElement,
   Button,
   Box,
-  Link as ChakraLink,
-  Flex,
   FormControl,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { UserContext } from "utils/UserContext";
@@ -32,7 +29,7 @@ function Login() {
       setTimeout(() => {
         login(username);
         router.push("/home");
-      }, 3000);
+      }, 1000);
     });
   }
 

@@ -1,13 +1,22 @@
-import { FormLabel, Input, Text, Box, Button, Select } from "@chakra-ui/react";
-import { schoolType } from "constants/school";
+import {
+  FormLabel,
+  Input,
+  Text,
+  Box,
+  Button,
+  Select,
+  Flex,
+  useToast,
+} from "@chakra-ui/react";
+import schoolLevel, { schoolType } from "constants/school";
 import { useRouter } from "next/router";
-import InputData from "pages/inputData";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Area from "pages/api/json/area.json";
 
 function Details() {
   const router = useRouter();
+  const toast = useToast();
   const { id } = router.query;
   const {
     register,
@@ -21,10 +30,10 @@ function Details() {
   const [type, setType] = useState("");
   const [schoolAddress, setSchoolAddress] = useState("");
   const [province, setProvince] = useState("");
+  const [city, setCity] = useState("");
+  const [isUpdate, setIsUpdated] = useState(false);
 
   const area = Area?.area;
-
-  console.log("school name", schoolName);
 
   useEffect(() => {
     const SteinStore = require("stein-js-client");
@@ -33,16 +42,26 @@ function Details() {
     );
 
     store.read("Sheet1", { search: { id: id } }).then((data) => {
-      console.log(data);
       setData(data);
       return data.forEach((d) => {
         setSchoolName(d.name);
         setType(d.type);
+        setLevel(d.level);
         setSchoolAddress(d.address);
         setProvince(d.province);
+        setCity(d.city);
       });
     });
-  }, []);
+
+    if (isUpdate)
+      toast({
+        position: "top-right",
+        title: "Data Updated Successfully",
+        status: "success",
+        isClosable: true,
+        duration: 2000,
+      });
+  }, [isUpdate]);
 
   const onSubmit = () => {
     const SteinStore = require("stein-js-client");
@@ -53,138 +72,149 @@ function Details() {
     store
       .edit("Sheet1", {
         search: { id: id },
-        set: { name: schoolName, address: schoolAddress },
+        set: {
+          name: schoolName,
+          type: type,
+          address: schoolAddress,
+          city: city,
+          province: province,
+          level: level,
+        },
       })
-      .then((res) => {
-        console.log(res);
-      });
+      .then((res) => res && setIsUpdated(true));
   };
 
-  const filterProvince = () => {
-    const arrArea = area.filter((val) => val.province === province);
-    console.log("arrArea", arrArea[0]?.province);
-    return arrArea[0]?.province;
-  };
-
-  const filterCities = () => {
-    const filteredBooks = books.filter((val) =>
-      val.areas.includes(filterValue)
-    );
-  };
-
-  const provinces = area.map((a) => (
+  const renderProvinces = area.map((a) => (
     <option value={a.province} key={a.index}>
       {a.province}
     </option>
   ));
 
-  // console.log(id);
-  // console.log(data);
-  console.log("area", Area);
-  console.log("filterprov", filterProvince());
+  const renderCities = province
+    ? area
+        .find((item) => item.province === province)
+        ?.cities.map((city) => (
+          <option value={city} key={city}>
+            {city}
+          </option>
+        ))
+    : [];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {data.map((d) => (
-        <div>
-          <Box marginBottom="12px" width="50%">
-            <FormLabel htmlFor="school name">Nama Sekolah</FormLabel>
-            <Input
-              {...register("schoolName", {
-                required: "Nama sekolah wajib diisi",
-              })}
-              value={schoolName}
-              placeholder="nama sekolah"
-              marginTop="1"
-              borderColor="gray.300"
-              onChange={(e) => setSchoolName(e.target.value)}
-            />
-            {errors.schoolName && (
-              <Text color="tomato" fontSize="sm">
-                {errors.schoolName.message}
-              </Text>
-            )}
+      {data && (
+        <Flex paddingTop="20" justifyContent="center" alignItems="center">
+          <Box width="6xl">
+            <Box marginBottom="12px">
+              <FormLabel htmlFor="school name">Nama Sekolah</FormLabel>
+              <Input
+                {...register("schoolName")}
+                value={schoolName}
+                placeholder="nama sekolah"
+                marginTop="1"
+                borderColor="gray.300"
+                onChange={(e) => setSchoolName(e.target.value)}
+              />
+              {errors.schoolName && (
+                <Text color="tomato" fontSize="sm">
+                  {errors.schoolName.message}
+                </Text>
+              )}
+            </Box>
+            <Box marginBottom="12px">
+              <FormLabel>Jenjang Sekolah</FormLabel>
+              <Select
+                {...register("schoolLevel", {
+                  required: "Jenjang sekolah wajib dipilih",
+                })}
+                value={level}
+                borderColor="gray.300"
+                marginTop="1"
+                onChange={(e) => setLevel(e.target.value)}
+              >
+                {schoolLevel.map((jenjang, index) => (
+                  <option value={jenjang} key={index}>
+                    {jenjang}
+                  </option>
+                ))}
+              </Select>
+              {errors.schoolLevel && (
+                <Text color="tomato" fontSize="sm">
+                  {errors.schoolLevel.message}
+                </Text>
+              )}
+            </Box>
+            <Box marginBottom="12px" marginTop="1">
+              <FormLabel>Jenis Sekolah</FormLabel>
+              <Select
+                {...register("schoolType", {
+                  required: "Jenis sekolah wajib dipilih",
+                })}
+                borderColor="gray.300"
+                marginTop="1"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                {schoolType.map((jenis, index) => (
+                  <option key={index} value={jenis}>
+                    {jenis}
+                  </option>
+                ))}
+              </Select>
+              {errors.schoolType && (
+                <Text color="tomato" fontSize="sm">
+                  {errors.schoolType.message}
+                </Text>
+              )}
+            </Box>
+            <Box marginBottom="12px">
+              <FormLabel>Provinsi</FormLabel>
+              <Select
+                {...register("Province")}
+                borderColor="gray.300"
+                marginTop="1"
+                value={province}
+                onChange={(e) => setProvince(e.target.value)}
+              >
+                {renderProvinces}
+              </Select>
+            </Box>
+            <Box marginBottom="12px">
+              <FormLabel>Kota / Kabupaten</FormLabel>
+              <Select
+                {...register("City")}
+                borderColor="gray.300"
+                marginTop="1"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              >
+                {renderCities}
+              </Select>
+            </Box>
+            <Box marginBottom="12px">
+              <FormLabel>Alamat</FormLabel>
+              <Input
+                {...register("schoolAddress")}
+                placeholder="alamat sekolah"
+                borderColor="gray.300"
+                marginTop="1"
+                value={schoolAddress}
+                onChange={(e) => setSchoolAddress(e.target.value)}
+              />
+              {errors.schoolAddress && (
+                <Text color="tomato" fontSize="sm">
+                  {errors.schoolAddress.message}
+                </Text>
+              )}
+            </Box>
+            <Flex justifyContent="flex-end">
+              <Button type="submit" isLoading={isSubmitting}>
+                Save
+              </Button>
+            </Flex>
           </Box>
-          {/* <Box marginBottom="12px">
-            <FormLabel>Jenjang Sekolah</FormLabel>
-            <Select
-              {...register("schoolLevel", {
-                required: "Jenjang sekolah wajib dipilih",
-              })}
-              placeholder="Pilih jenjang sekolah"
-              borderColor="gray.300"
-              marginTop="1"
-              onChange={(e) => setLevel(e.target.value)}
-            >
-              {schoolLevel.map((jenjang, index) => (
-                <option value={jenjang} key={index}>
-                  {jenjang}
-                </option>
-              ))}
-            </Select>
-            {errors.schoolLevel && (
-              <Text color="tomato" fontSize="sm">
-                {errors.schoolLevel.message}
-              </Text>
-            )}
-          </Box> */}
-          <Box marginBottom="12px" marginTop="1">
-            <FormLabel>Jenis Sekolah</FormLabel>
-            <Select
-              {...register("schoolType", {
-                required: "Jenis sekolah wajib dipilih",
-              })}
-              placeholder="Pilih jenis sekolah"
-              borderColor="gray.300"
-              marginTop="1"
-              onChange={(e) => setType(e.target.value)}
-              value={type}
-            >
-              {schoolType.map((jenis) => (
-                <option value={jenis}>{jenis}</option>
-              ))}
-            </Select>
-            {errors.schoolType && (
-              <Text color="tomato" fontSize="sm">
-                {errors.schoolType.message}
-              </Text>
-            )}
-          </Box>
-          <Box marginBottom="12px">
-            <FormLabel>Provinsi</FormLabel>
-            <Select
-              {...register("Province")}
-              placeholder="Pilih Provinsi"
-              borderColor="gray.300"
-              marginTop="1"
-              // onChange={handleProvinceChange}
-              value={filterProvince()}
-            >
-              {provinces}
-            </Select>
-          </Box>
-          <p>KOTA: {d.city}</p>
-          <Box marginBottom="12px">
-            <FormLabel>Alamat</FormLabel>
-            <Input
-              {...register("schoolAddress", {
-                required: "Alamat sekolah wajib diisi",
-              })}
-              placeholder="alamat sekolah"
-              borderColor="gray.300"
-              marginTop="1"
-              value={schoolAddress}
-              onChange={(e) => setSchoolAddress(e.target.value)}
-            />
-            {errors.schoolAddress && (
-              <Text color="tomato" fontSize="sm">
-                {errors.schoolAddress.message}
-              </Text>
-            )}
-          </Box>
-        </div>
-      ))}
-      <Button type="submit">Save</Button>
+        </Flex>
+      )}
     </form>
   );
 }
