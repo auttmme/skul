@@ -27,7 +27,7 @@ function Home() {
 
   return (
     <Box>
-      <Flex padding="8px" mb="16px">
+      <Flex padding="8px" mb="16px" alignItems="center" gap={8}>
         <Search />
         <FiFilter fontSize="24px" />
       </Flex>
