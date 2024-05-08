@@ -29,9 +29,10 @@ function DataTable({ pending, data, setData }) {
       .delete("Sheet1", {
         search: { id: id },
       })
-      .then(() => {
+      .then((res) => {
         copyData = data.filter((val) => val.id !== id);
         setData(copyData);
+        return res;
       });
   };
 
@@ -43,6 +44,7 @@ function DataTable({ pending, data, setData }) {
             <Tr>
               <Th>No</Th>
               <Th>Nama Sekolah</Th>
+              <Th>Jenjang Sekolah</Th>
               <Th>Jenis</Th>
               <Th>Alamat</Th>
               <Th>Action</Th>
@@ -65,6 +67,9 @@ function DataTable({ pending, data, setData }) {
                       <Skeleton height="10" />
                     </Td>
                     <Td>
+                      <Skeleton height="10" />
+                    </Td>
+                    <Td>
                       <Flex>
                         <Skeleton height="16px" width="16px" />
                         <Skeleton ml="16px" height="16px" width="16px" />
@@ -73,11 +78,14 @@ function DataTable({ pending, data, setData }) {
                   </Tr>
                 ))
               : copyData?.map((item, index) => {
-                  const { id, name, type, address, city, province } = item;
+                  const { id, name, level, type, address, city, province } =
+                    item;
+                  if (!id) return null;
                   return (
                     <Tr key={id}>
-                      <Td>{index + 1}</Td>
+                      <Td>{index}</Td>
                       <Td>{name}</Td>
+                      <Td>{level}</Td>
                       <Td>{type}</Td>
                       <Td>
                         {address}, {city}, {province}
