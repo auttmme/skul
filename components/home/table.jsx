@@ -83,7 +83,7 @@ function DataTable({ pending, data, setData }) {
                   if (!id) return null;
                   return (
                     <Tr key={id}>
-                      <Td>{index}</Td>
+                      <Td>{index + 1}</Td>
                       <Td>{name}</Td>
                       <Td>{level}</Td>
                       <Td>{type}</Td>
